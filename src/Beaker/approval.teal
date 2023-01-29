@@ -1,0 +1,109 @@
+#pragma version 8
+intcblock 0 1
+bytecblock 0x70726f706f73616c 0x73746172745f74696d65 0x656e645f74696d65
+txn NumAppArgs
+intc_0 // 0
+==
+bnz main_l4
+txna ApplicationArgs 0
+pushbytes 0xdae386d8 // "create_proposal(string,uint64)void"
+==
+bnz main_l3
+err
+main_l3:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+txna ApplicationArgs 1
+store 0
+txna ApplicationArgs 2
+btoi
+store 1
+load 0
+load 1
+callsub createproposal_3
+intc_1 // 1
+return
+main_l4:
+txn OnCompletion
+intc_0 // NoOp
+==
+bnz main_l8
+txn OnCompletion
+intc_1 // OptIn
+==
+bnz main_l7
+err
+main_l7:
+txn ApplicationID
+intc_0 // 0
+!=
+assert
+callsub optin_1
+intc_1 // 1
+return
+main_l8:
+txn ApplicationID
+intc_0 // 0
+==
+assert
+callsub create_0
+intc_1 // 1
+return
+
+// create
+create_0:
+bytec_0 // "proposal"
+pushbytes 0x // ""
+app_global_put
+bytec_1 // "start_time"
+intc_0 // 0
+app_global_put
+bytec_2 // "end_time"
+intc_0 // 0
+app_global_put
+pushbytes 0x726573756c74 // "result"
+intc_0 // 0
+app_global_put
+pushbytes 0x6e756d5f6f665f79617973 // "num_of_yays"
+intc_0 // 0
+app_global_put
+pushbytes 0x6e756d5f6f665f6e617973 // "num_of_nays"
+intc_0 // 0
+app_global_put
+retsub
+
+// optin
+optin_1:
+retsub
+
+// auth_only
+authonly_2:
+global CreatorAddress
+==
+retsub
+
+// create_proposal
+createproposal_3:
+store 3
+store 2
+txn Sender
+callsub authonly_2
+// unauthorized
+assert
+bytec_0 // "proposal"
+load 2
+extract 2 0
+app_global_put
+bytec_1 // "start_time"
+global LatestTimestamp
+app_global_put
+bytec_2 // "end_time"
+load 3
+app_global_put
+retsub

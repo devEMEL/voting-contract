@@ -1,0 +1,22 @@
+{
+    "name": "Voting",
+    "methods": [
+        {
+            "name": "create_proposal",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "proposal"
+                },
+                {
+                    "type": "uint64",
+                    "name": "end_time"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ],
+    "networks": {}
+}

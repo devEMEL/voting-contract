@@ -34,13 +34,12 @@ class Voting(Application):
     @external(authorize=Authorize.only(Global.creator_address()))
     def create_proposal(self, proposal: abi.String, end_time: abi.Uint64):
         return Seq(
-            # (start_time := abi.Uint64()).set(Global.latest_timestamp()),
             self.proposal.set(proposal.get()),
             self.start_time.set(Global.latest_timestamp()),
             self.end_time.set(end_time.get())
         )
 
-    
+
 
 
 Voting().dump()

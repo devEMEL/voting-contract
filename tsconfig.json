@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "ES2017",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+  },
+
+  "files": ["src/index.ts"]
+}

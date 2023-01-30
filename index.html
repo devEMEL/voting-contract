@@ -1,36 +1,144 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="style.css" />
-        <title>Algorand Web App</title>
-    </head>
-    <body style="background-color: brown;text-align: center;margin-top: 50px;color: #fff;">
-        <h1 style="text-transform: uppercase;color: #fff;margin-bottom: 20px;">beaker voting app</h1>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algo Smart Vote</title>
+    <link href="./app.css" rel="stylesheet" />
+  </head>
+  <body class="gradient-bg-body h-screen">
+    <header
+      class="w-full px-10 flex justify-between items-center py-4 mx-auto h-[10%] border-b border-green-400"
+    >
+      <div
+        class="md:flex-[0.5] flex-initial justify-center items-center text-white font-bold text-2xl"
+      >
+        Algo Smart Vote
+      </div>
 
-        <!-- Accounts -->
-        <select name="accounts" id="accounts">Select account</select>
+      <button
+        onclick="truncate()"
+        id="connection"
+        class="shadow-xl shadow-black text-white bg-green-400 hover:bg-green-600 md:text-xs p-2 rounded-full"
+      >
+        Connect Wallet
+      </button>
+    </header>
 
-        <!-- connect -->
-        <button id="connect" style="padding: 10px 15px;text-align: center;text-decoration: none;color: black;font-size: 16px;">connect wallet</button><br><br>
+    <main class="grid grid-cols-1 md:grid-cols-2 h-[90%] w-full">
+      <div class="h-full p-5 pb-2 pl-10">
+        <div class="w-full h-[50%]">
+          <form class="flex flex-col h-full">
+            <div
+              class="flex justify-between items-center bg-gray-800 rounded-xl h-[80%]"
+            >
+              <textarea
+                class="block h-full bg-transparent border-0 w-full text-sm text-slate-500 focus:outline-none cursor-pointer focus:ring-0 resize-none"
+                placeholder="Enter your proposal"
+                name="proposal"
+                required
+                value=""
+              ></textarea>
+            </div>
 
-        <!-- create app -->
-        <button id="create_app" style="padding: 10px 15px;text-align: center;text-decoration: none;color: black;font-size: 16px;" disabled>Create app</button><br><br>
-        <div id="create_app_status"></div>
+            <div
+              class="flex justify-between items-center bg-gray-800 rounded-xl mt-1"
+            >
+              <input
+                class="block bg-transparent border-0 w-full text-sm text-slate-500 focus:outline-none cursor-pointer focus:ring-0"
+                type="number"
+                placeholder="Enter end time for your proposal"
+                value=""
+                name="price"
+                required
+              />
+            </div>
 
-        <!-- create token and log token id -->
-        <button id="optin_to_asset" style="padding: 10px 15px;text-align: center;text-decoration: none;color: black;font-size: 16px;" disabled>Optin to Asset</button><br><br>
+            <button
+              class="flex w-full text-md mt-2 justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-full p-2"
+            >
+              Make Proposal
+            </button>
+          </form>
+        </div>
+        <div class="w-full h-[50%] pt-5">
+          <div class="h-full bg-gray-700 rounded-md">
+            <button
+              class="flex h-[15%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+            >
+              Get Proposal
+            </button>
 
+            <div class="h-[75%]">
+              <!-- Lists of results-->
+              <div
+                class="bg-gray-800 p-2 my-4 mx-2 h-auto text-md text-white font-semibold rounded-md"
+              >
+                10 Yes
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="h-full pb-2 p-5 pr-10">
+        <div class="h-full border-l border-gray-500 pl-2">
+          <button
+            class="flex max-h-[10%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+          >
+            Optin To Contract
+          </button>
+          <div class="max-h-[90%] overflow-y-auto">
+            <!-- List for proposals-->
+            <div class="h-auto rounded-md mt-4 bg-slate-800">
+              <div class="p-2 text-white text-sm">
+                we all need to move up the ladder we all need to move up the
+                ladder we all need to move up the ladder we all need to move up
+                the ladder we all need to move up the ladder we all need to move
+                up the ladder
+              </div>
+              <div class="p-2 text-white text-md">
+                <small class="font-bold"> End Time: </small>
+                <small class="text-green-600"> 60 secs </small>
+              </div>
 
-        <!-- create token and log token id -->
-        <button id="optin_to_contract" style="padding: 10px 15px;text-align: center;text-decoration: none;color: black;font-size: 16px;">Optin to contract</button><br><br>
+              <div class="p-2 flex justify-between gap-3">
+                <button
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+                >
+                  YES
+                </button>
+                <button
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-red-500 hover:bg-red-600 rounded-md p-2"
+                >
+                  NO
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
-        <input type="number" id="stake_amount" placeholder="Enter amount of ASC to stake " style="padding: 16px 16px;">
-        <button id="stake" style="padding: 10px 15px;text-align: center;text-decoration: none;color: black;font-size: 16px;">Stake ASC</button><br><br>
+    <script>
+      const truncate = (
+        text = "0x0872893278987067858758755028302",
+        startChars = 4,
+        endChars = 4,
+        maxLength = 11
+      ) => {
+        if (text.length > maxLength) {
+          var start = text.substring(0, startChars);
+          var end = text.substring(text.length - endChars, text.length);
+          while (start.length + end.length < maxLength) {
+            start = start + ".";
+          }
+          document.getElementById("connection").innerHTML = `${start + end}`;
+          return;
+        }
 
-        <!-- cast vote -->
-        <button id="unstake" style="padding: 10px 15px;text-align: center;text-decoration: none;color: black;font-size: 16px;">Unstake ASC</button><br><br>
-
-
-    </body>
+        document.getElementById("connection").innerHTML = `${text}`;
+      };
+    </script>
+  </body>
 </html>

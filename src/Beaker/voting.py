@@ -76,15 +76,16 @@ class Voting(Application):
             self.has_vote.set(Int(1))
         )
 
-    @external
-    def get_vote_result(self):
+    @external(authorize=Authorize.only(Global.creator_address()))
+    def get_vote_result(self, *, output: abi.String):
         return Seq(
             Assert(Global.latest_timestamp() > self.end_time),
             If(self.num_of_yays > self.num_of_nays)
             .Then(self.result.set(Bytes("passed")))
             .ElseIf(self.num_of_yays < self.num_of_nays)
             .Then(self.result.set(Bytes("rejected")))
-            .Else(self.result.set(Bytes("tie")))
+            .Else(self.result.set(Bytes("undecided"))),
+            output.set(self.result)
         )
 
     @bare_external(close_out=CallConfig.CALL, clear_state=CallConfig.CALL)
@@ -93,12 +94,12 @@ class Voting(Application):
             Assert(self.has_vote == Int(1)),
             If(self.vote_choice == Bytes("yes"))
             .Then(
-                Assert(self.num_of_yays >= Int(1)),
+                Assert(self.num_of_yays > Int(0)),
                 self.num_of_yays.decrement()
             )
             .ElseIf(self.vote_choice == Bytes("no")).
             Then(
-                Assert(self.num_of_nays >= Int(1)),
+                Assert(self.num_of_nays > Int(0)),
                 self.num_of_nays.decrement()
             ),
             self.vote_choice.set(Bytes("")),

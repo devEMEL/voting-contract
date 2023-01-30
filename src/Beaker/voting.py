@@ -87,5 +87,23 @@ class Voting(Application):
             .Else(self.result.set(Bytes("tie")))
         )
 
+    @bare_external(close_out=CallConfig.CALL, clear_state=CallConfig.CALL)
+    def clear_vote(self):
+        return Seq(
+            Assert(self.has_vote == Int(1)),
+            If(self.vote_choice == Bytes("yes"))
+            .Then(
+                Assert(self.num_of_yays >= Int(1)),
+                self.num_of_yays.decrement()
+            )
+            .ElseIf(self.vote_choice == Bytes("no")).
+            Then(
+                Assert(self.num_of_nays >= Int(1)),
+                self.num_of_nays.decrement()
+            ),
+            self.vote_choice.set(Bytes("")),
+            self.has_vote.set(Int(0))
+        )
+
 
 Voting().dump()

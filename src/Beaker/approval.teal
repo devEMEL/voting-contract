@@ -1,6 +1,6 @@
 #pragma version 8
 intcblock 0 1
-bytecblock 0x6e756d5f6f665f79617973 0x6e756d5f6f665f6e617973 0x 0x656e645f74696d65 0x726573756c74 0x766f74655f63686f696365 0x73746172745f74696d65 0x6861735f766f7465 0x70726f706f73616c 0x796573 0x6e6f
+bytecblock 0x6e756d5f6f665f79617973 0x6e756d5f6f665f6e617973 0x766f74655f63686f696365 0x6861735f766f7465 0x 0x656e645f74696d65 0x726573756c74 0x73746172745f74696d65 0x796573 0x6e6f 0x70726f706f73616c
 txn NumAppArgs
 intc_0 // 0
 ==
@@ -113,17 +113,17 @@ return
 
 // create
 create_0:
-bytec 8 // "proposal"
-bytec_2 // ""
+bytec 10 // "proposal"
+bytec 4 // ""
 app_global_put
-bytec 6 // "start_time"
+bytec 7 // "start_time"
 intc_0 // 0
 app_global_put
-bytec_3 // "end_time"
+bytec 5 // "end_time"
 intc_0 // 0
 app_global_put
-bytec 4 // "result"
-bytec_2 // ""
+bytec 6 // "result"
+bytec 4 // ""
 app_global_put
 bytec_0 // "num_of_yays"
 intc_0 // 0
@@ -136,11 +136,11 @@ retsub
 // optin
 optin_1:
 txn Sender
-bytec 5 // "vote_choice"
-bytec_2 // ""
+bytec_2 // "vote_choice"
+bytec 4 // ""
 app_local_put
 txn Sender
-bytec 7 // "has_vote"
+bytec_3 // "has_vote"
 intc_0 // 0
 app_local_put
 retsub
@@ -160,8 +160,55 @@ retsub
 // clear_vote
 clearvote_4:
 txn Sender
-bytec 5 // "vote_choice"
-bytec_2 // ""
+bytec_3 // "has_vote"
+app_local_get
+intc_1 // 1
+==
+assert
+txn Sender
+bytec_2 // "vote_choice"
+app_local_get
+bytec 8 // "yes"
+==
+bnz clearvote_4_l3
+txn Sender
+bytec_2 // "vote_choice"
+app_local_get
+bytec 9 // "no"
+==
+bz clearvote_4_l4
+bytec_1 // "num_of_nays"
+app_global_get
+intc_1 // 1
+>=
+assert
+bytec_1 // "num_of_nays"
+bytec_1 // "num_of_nays"
+app_global_get
+intc_1 // 1
+-
+app_global_put
+b clearvote_4_l4
+clearvote_4_l3:
+bytec_0 // "num_of_yays"
+app_global_get
+intc_1 // 1
+>=
+assert
+bytec_0 // "num_of_yays"
+bytec_0 // "num_of_yays"
+app_global_get
+intc_1 // 1
+-
+app_global_put
+clearvote_4_l4:
+txn Sender
+bytec_2 // "vote_choice"
+bytec 4 // ""
+app_local_put
+txn Sender
+bytec_3 // "has_vote"
+intc_0 // 0
 app_local_put
 retsub
 
@@ -173,14 +220,14 @@ txn Sender
 callsub authonly_2
 // unauthorized
 assert
-bytec 8 // "proposal"
+bytec 10 // "proposal"
 load 5
 extract 2 0
 app_global_put
-bytec 6 // "start_time"
+bytec 7 // "start_time"
 global LatestTimestamp
 app_global_put
-bytec_3 // "end_time"
+bytec 5 // "end_time"
 load 6
 app_global_put
 retsub
@@ -205,11 +252,11 @@ store 10
 load 11
 assert
 global LatestTimestamp
-bytec 6 // "start_time"
+bytec 7 // "start_time"
 app_global_get
 >=
 global LatestTimestamp
-bytec_3 // "end_time"
+bytec 5 // "end_time"
 app_global_get
 <=
 &&
@@ -219,24 +266,24 @@ intc_1 // 1
 ==
 assert
 txn Sender
-bytec 7 // "has_vote"
+bytec_3 // "has_vote"
 app_local_get
 intc_0 // 0
 ==
 assert
 load 7
 extract 2 0
-bytec 9 // "yes"
+bytec 8 // "yes"
 ==
 bnz vote_6_l3
 load 7
 extract 2 0
-bytec 10 // "no"
+bytec 9 // "no"
 ==
 bz vote_6_l4
 txn Sender
-bytec 5 // "vote_choice"
-bytec 10 // "no"
+bytec_2 // "vote_choice"
+bytec 9 // "no"
 app_local_put
 bytec_1 // "num_of_nays"
 bytec_1 // "num_of_nays"
@@ -247,8 +294,8 @@ app_global_put
 b vote_6_l4
 vote_6_l3:
 txn Sender
-bytec 5 // "vote_choice"
-bytec 9 // "yes"
+bytec_2 // "vote_choice"
+bytec 8 // "yes"
 app_local_put
 bytec_0 // "num_of_yays"
 bytec_0 // "num_of_yays"
@@ -258,7 +305,7 @@ intc_1 // 1
 app_global_put
 vote_6_l4:
 txn Sender
-bytec 7 // "has_vote"
+bytec_3 // "has_vote"
 intc_1 // 1
 app_local_put
 retsub
@@ -266,7 +313,7 @@ retsub
 // get_vote_result
 getvoteresult_7:
 global LatestTimestamp
-bytec_3 // "end_time"
+bytec 5 // "end_time"
 app_global_get
 >
 assert
@@ -282,17 +329,17 @@ bytec_1 // "num_of_nays"
 app_global_get
 <
 bnz getvoteresult_7_l3
-bytec 4 // "result"
+bytec 6 // "result"
 pushbytes 0x746965 // "tie"
 app_global_put
 b getvoteresult_7_l5
 getvoteresult_7_l3:
-bytec 4 // "result"
+bytec 6 // "result"
 pushbytes 0x6661696c6564 // "failed"
 app_global_put
 b getvoteresult_7_l5
 getvoteresult_7_l4:
-bytec 4 // "result"
+bytec 6 // "result"
 pushbytes 0x706173736564 // "passed"
 app_global_put
 getvoteresult_7_l5:

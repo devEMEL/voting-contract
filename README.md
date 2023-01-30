@@ -1,5 +1,5 @@
 
-##README  
+**Voting Application**  
 The application supports opt-in voting and tracks staking information 
 with an ApplicationStateValue and AccountStateValue.  
 

@@ -5,6 +5,7 @@ import algosdk from "algosdk";
 import { MyAlgoSession } from "./wallets/myalgo";
 import { Voting } from "./voting_client";
 
+
 const myAlgo = new MyAlgoSession();
 const algodClient = new algosdk.Algodv2(
   "",
@@ -182,35 +183,26 @@ buttons.propose_no.onclick = async () => {
   console.log(proposal["num_of_nays"])
 }
 
-const getOnchain = async() => {
 
-  console.log('loaded successfully');
-
-  const votingApp = new Voting({
-    client: algodClient,
-    signer,
-    sender: accountsMenu.selectedOptions[0].value,
-    appId: APPID
-  });
-
-  const proposal = await votingApp.getApplicationState()
-  console.log(proposal)
-  console.log("")
-
-  prop = String(proposal["proposal"])
-  document.getElementById("proposal_description").innerHTML = `${prop}`;
-  
-  // let deadline = algosdk.decodeUint64(proposal["end_time"], "safe") / BigInt(86400)
-  deadline = Number(proposal["end_time"])
-  // console.log(deadline);
-  
-  document.getElementById("proposal_end_time").innerHTML = `${deadline} seconds`;
-
-  console.log(proposal["proposal"])
-  console.log(proposal["end_time"])
-}
 
 window.onload = (e => {
-  getOnchain()
-  
+  (async() => {
+    let response = await indexerClient.lookupApplications(APPID).includeAll(true).do();
+    
+    let globalState = response.application.params["global-state"];
+    let proposal = globalState.find((state: { key: string; }) => {
+      return state.key === Buffer.from("proposal", 'utf8').toString('base64')
+    })
+    let end_time = globalState.find((state: { key: string; }) => {
+      return state.key === Buffer.from("end_time", 'utf8').toString('base64')
+    })
+    console.log(globalState);
+    let prop = Buffer.from(proposal.value.bytes, 'base64').toString('utf-8')
+    
+    console.log(proposal.value.bytes);
+    console.log(end_time.value.uint);
+    document.getElementById("proposal_description").innerHTML = `${prop}`
+    document.getElementById("proposal_end_time").innerHTML = `${end_time.value.uint}`
+    
+  })();
 })

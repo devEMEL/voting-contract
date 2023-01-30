@@ -18,8 +18,7 @@
       </div>
 
       <button
-        onclick="truncate()"
-        id="connection"
+        id="connect"
         class="shadow-xl shadow-black text-white bg-green-400 hover:bg-green-600 md:text-xs p-2 rounded-full"
       >
         Connect Wallet
@@ -81,15 +80,67 @@
           </div>
         </div>
       </div>
-      <div class="h-full pb-2 p-5 pr-10">
-        <div class="h-full border-l border-gray-500 pl-2">
+      <div class="h-full pb-2 p-5 pr-10 overflow-auto">
+        <div class="h-full border-l pl-2">
           <button
-            class="flex max-h-[10%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+            class="flex h-[10%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
           >
             Optin To Contract
           </button>
-          <div class="max-h-[90%] overflow-y-auto">
+          <div
+            class="h-[90%] overflow-y-auto scrollbar scrollbar-thumb-gray-500 scrollbar-track-slate-900"
+          >
             <!-- List for proposals-->
+            <div class="h-auto rounded-md mt-4 bg-slate-800">
+              <div class="p-2 text-white text-sm">
+                we all need to move up the ladder we all need to move up the
+                ladder we all need to move up the ladder we all need to move up
+                the ladder we all need to move up the ladder we all need to move
+                up the ladder
+              </div>
+              <div class="p-2 text-white text-md">
+                <small class="font-bold"> End Time: </small>
+                <small class="text-green-600"> 60 secs </small>
+              </div>
+
+              <div class="p-2 flex justify-between gap-3">
+                <button
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+                >
+                  YES
+                </button>
+                <button
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-red-500 hover:bg-red-600 rounded-md p-2"
+                >
+                  NO
+                </button>
+              </div>
+            </div>
+            <div class="h-auto rounded-md mt-4 bg-slate-800">
+              <div class="p-2 text-white text-sm">
+                we all need to move up the ladder we all need to move up the
+                ladder we all need to move up the ladder we all need to move up
+                the ladder we all need to move up the ladder we all need to move
+                up the ladder
+              </div>
+              <div class="p-2 text-white text-md">
+                <small class="font-bold"> End Time: </small>
+                <small class="text-green-600"> 60 secs </small>
+              </div>
+
+              <div class="p-2 flex justify-between gap-3">
+                <button
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+                >
+                  YES
+                </button>
+                <button
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-red-500 hover:bg-red-600 rounded-md p-2"
+                >
+                  NO
+                </button>
+              </div>
+            </div>
             <div class="h-auto rounded-md mt-4 bg-slate-800">
               <div class="p-2 text-white text-sm">
                 we all need to move up the ladder we all need to move up the
@@ -119,26 +170,5 @@
         </div>
       </div>
     </main>
-
-    <script>
-      const truncate = (
-        text = "0x0872893278987067858758755028302",
-        startChars = 4,
-        endChars = 4,
-        maxLength = 11
-      ) => {
-        if (text.length > maxLength) {
-          var start = text.substring(0, startChars);
-          var end = text.substring(text.length - endChars, text.length);
-          while (start.length + end.length < maxLength) {
-            start = start + ".";
-          }
-          document.getElementById("connection").innerHTML = `${start + end}`;
-          return;
-        }
-
-        document.getElementById("connection").innerHTML = `${text}`;
-      };
-    </script>
   </body>
 </html>

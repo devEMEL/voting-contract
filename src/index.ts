@@ -19,6 +19,25 @@ import "./app.css";
 
 // let ASSETID = 156293328;
 
+//truncate wallet address
+const truncate = (
+  text: string,
+  startChars: number,
+  endChars: number,
+  maxLength: number
+): void => {
+  if (text.length > maxLength) {
+    var start = text.substring(0, startChars);
+    var end = text.substring(text.length - endChars, text.length);
+    while (start.length + end.length < maxLength) {
+      start = start + ".";
+    }
+    document.getElementById("connect").innerHTML = `${start + end}`;
+  } else {
+    document.getElementById("connect").innerHTML = `${text}`;
+  }
+};
+
 // const buttonIds = ['connect', 'create_app', 'optin_to_asset', 'optin_to_contract', 'stake', 'unstake'];
 // const buttons: {[key: string]: HTMLButtonElement} = {};
 // const accountsMenu = document.getElementById('accounts') as HTMLSelectElement;
@@ -32,6 +51,8 @@ import "./app.css";
 // buttons.connect.onclick = async () => {
 //   await myAlgo.getAccounts()
 //   myAlgo.accounts.forEach(account => {
+//call function to truncate address
+//    truncate(account.address, 4, 4, 11);
 //     accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
 //     console.log(account);
 

@@ -41,7 +41,7 @@
             "name": "get_vote_result",
             "args": [],
             "returns": {
-                "type": "void"
+                "type": "string"
             }
         }
     ],

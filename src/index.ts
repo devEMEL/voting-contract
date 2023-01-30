@@ -1,21 +1,32 @@
 import "./app.css";
 
-// import algosdk from "algosdk";
+import algosdk from "algosdk";
 
-// import { MyAlgoSession} from './wallets/myalgo'
-// import { Stake } from './stake_client';
+import { MyAlgoSession} from './wallets/myalgo'
+import { Voting } from './voting_client';
 
-// const myAlgo = new MyAlgoSession();
-// const algodClient = new algosdk.Algodv2('', "https://node.testnet.algoexplorerapi.io", '');
-// const indexerClient = new algosdk.Indexer('', "https://algoindexer.testnet.algoexplorerapi.io", '');
+const myAlgo = new MyAlgoSession();
+const algodClient = new algosdk.Algodv2('', "https://node.testnet.algoexplorerapi.io", '');
+const indexerClient = new algosdk.Indexer('', "https://algoindexer.testnet.algoexplorerapi.io", '');
 
-// async function signer(txns: algosdk.Transaction[]) {
-//   const sTxns = await myAlgo.signTxns(txns)
-//   return sTxns.map(s => s.blob)
-// }
+async function signer(txns: algosdk.Transaction[]) {
+  const sTxns = await myAlgo.signTxns(txns)
+  return sTxns.map(s => s.blob)
+}
 
-// let faucetAPPID = 156293058;
-// let APPID = 156323953;
+let faucetAPPID = 156293058;
+let stakingAPPID = 156323953;
+
+let ASSETID = 156293328;
+
+const buttonIds = ['connect', 'create_app', 'optin_to_contract', 'make_proposal', 'get_proposal', 'yes_voters', 'no_voters', 'proposal_description', 'proposal_end_time', 'propose_yes', 'propose_no'];
+
+const buttons: {[key: string]: HTMLButtonElement} = {};
+const accountsMenu = document.getElementById('accounts') as HTMLSelectElement;
+
+let end_time = document.getElementById("end_time") as HTMLInputElement
+let description = document.getElementById("description") as HTMLTextAreaElement
+
 
 // let ASSETID = 156293328;
 
@@ -38,11 +49,16 @@ const truncate = (
   }
 };
 
-// const buttonIds = ['connect', 'create_app', 'optin_to_asset', 'optin_to_contract', 'stake', 'unstake'];
-// const buttons: {[key: string]: HTMLButtonElement} = {};
-// const accountsMenu = document.getElementById('accounts') as HTMLSelectElement;
 
-// let amountInput = document.getElementById("stake_amount") as HTMLInputElement
+buttonIds.forEach(id => {
+  buttons[id] = document.getElementById(id) as HTMLButtonElement
+})
+
+buttons.connect.onclick = async () => {
+  // await myAlgo.getAccounts()
+  // myAlgo.accounts.forEach(account => {
+  //   accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
+  //   console.log(account);
 
 // buttonIds.forEach(id => {
 //   buttons[id] = document.getElementById(id) as HTMLButtonElement
@@ -51,8 +67,8 @@ const truncate = (
 // buttons.connect.onclick = async () => {
 //   await myAlgo.getAccounts()
 //   myAlgo.accounts.forEach(account => {
-//call function to truncate address
-//    truncate(account.address, 4, 4, 11);
+    //call function to truncate address
+   // truncate(account.address, 4, 4, 11);
 //     accountsMenu.add(new Option(`${account.name} - ${account.address}`, account.address))
 //     console.log(account);
 

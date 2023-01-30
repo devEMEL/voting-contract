@@ -41,6 +41,7 @@
                 required
                 value=""
                 id="description"
+                style="color: #fff;"
               ></textarea>
             </div>
 
@@ -55,6 +56,7 @@
                 name="price"
                 required
                 id="end_time"
+                style="color: #fff;"
               />
             </div>
 
@@ -65,13 +67,13 @@
             </button>
           </form>
         </div>
-        <div class="w-full h-[50%] pt-5" style="display: none;" id="hide_proposal_sub">
+        <div class="w-full h-[50%] pt-5" id="hide_proposal_sub">
           <!-- display none -->
           <div class="h-full bg-gray-700 rounded-md">
             <button
               class="flex h-[15%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2" id="get_proposal"
             >
-              Get Proposal
+              Get Proposal Result
             </button>
 
           </div>
@@ -83,12 +85,12 @@
           <div
             class="bg-gray-800 p-2 my-4 mx-2 h-auto text-md text-white font-semibold rounded-md" id="yes_voters"
           >
-            10 Yes
+            0 Yes
           </div>
           <div
             class="bg-gray-800 p-2 my-4 mx-2 h-auto text-md text-white font-semibold rounded-md" id="no_voters"
           >
-            10 No
+            0 No
           </div>
         </div>
       </div>
@@ -129,27 +131,8 @@
           </div>
         </div>
       </div>
+      <button id="create_app">create app</button>
+      <div id="create_app_status"></div>
     </main>
-
-    <script>
-      const truncate = (
-        text = "0x0872893278987067858758755028302",
-        startChars = 4,
-        endChars = 4,
-        maxLength = 11
-      ) => {
-        if (text.length > maxLength) {
-          var start = text.substring(0, startChars);
-          var end = text.substring(text.length - endChars, text.length);
-          while (start.length + end.length < maxLength) {
-            start = start + ".";
-          }
-          document.getElementById("connection").innerHTML = `${start + end}`;
-          return;
-        }
-
-        document.getElementById("connection").innerHTML = `${text}`;
-      };
-    </script>
   </body>
 </html>

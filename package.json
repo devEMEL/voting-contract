@@ -22,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@awaitbox/window-loaded": "^1.0.5",
     "@json-rpc-tools/utils": "^1.7.6",
     "@randlabs/myalgo-connect": "^1.2.0",
     "@walletconnect/client": "^1.7.8",

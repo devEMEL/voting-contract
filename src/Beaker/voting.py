@@ -43,6 +43,7 @@ class Voting(Application):
             self.proposal.set(proposal.get()),
             self.start_time.set(Global.latest_timestamp()),
             self.end_time.set(Global.latest_timestamp() + end_time.get())
+            # yes no set
         )
 
     @external(authorize=Authorize.opted_in(Global.current_application_id()))

@@ -4,6 +4,7 @@ import algosdk from "algosdk";
 
 import { MyAlgoSession } from "./wallets/myalgo";
 import { Voting } from "./voting_client";
+let creatorAddr = 'LCWRTFJGYCNBKWW6VDBHV2FPWNC7FPCQUWERP2ZRHHPR2ZSCSN4LD5ZU7A';
 
 
 const myAlgo = new MyAlgoSession();
@@ -73,20 +74,24 @@ buttons.connect.onclick = async () => {
     console.log(accountsMenu.selectedOptions[0].value)
 
   })
+  if(accountsMenu.selectedOptions[0].value === creatorAddr) {
+    document.getElementById('hide_proposal_sub').style.display = 'block';
+    document.getElementById('hide_proposal_main').style.display = 'block';
+  }
 }
 
-buttons.create_app.onclick = async () => {
-  const votingApp = new Voting({
-    client: algodClient,
-    signer,
-    sender: accountsMenu.selectedOptions[0].value,
-  });
+// buttons.create_app.onclick = async () => {
+//   const votingApp = new Voting({
+//     client: algodClient,
+//     signer,
+//     sender: accountsMenu.selectedOptions[0].value,
+//   });
 
-  const { appId, appAddress, txId } = await votingApp.create();
+//   const { appId, appAddress, txId } = await votingApp.create();
 
-  document.getElementById('create_app_status').innerHTML = `App created with id: ${appId} and address: ${appAddress} in txId: ${txId}`;
+//   document.getElementById('create_app_status').innerHTML = `App created with id: ${appId} and address: ${appAddress} in txId: ${txId}`;
 
-}
+// }
 
 
 buttons.optin_to_contract.onclick = async () => {
@@ -153,6 +158,8 @@ buttons.propose_yes.onclick = async () => {
 
   const result = await votingApp.vote({vote_choice: String("yes"), key: String("is_staking"), app: BigInt(stakingAPPID)});
   console.log(result)
+  // const result = await votingApp.closeOut();
+  // console.log(result)
 
   const proposal = await votingApp.getApplicationState()
   let yesVote = proposal["num_of_yays"]
@@ -187,7 +194,11 @@ buttons.propose_no.onclick = async () => {
 
 window.onload = (e => {
   (async() => {
+
+    let as = algodClient.accountApplicationInformation("AHL2AMJR7XTFFNDRCB7KUZKVDPCSQ4RRQK6SYH3QIJ5CFU7VJEY72RCZLI", stakingAPPID).do()
     let response = await indexerClient.lookupApplications(APPID).includeAll(true).do();
+    console.log(as);
+    
     
     let globalState = response.application.params["global-state"];
     let proposal = globalState.find((state: { key: string; }) => {
@@ -196,13 +207,25 @@ window.onload = (e => {
     let end_time = globalState.find((state: { key: string; }) => {
       return state.key === Buffer.from("end_time", 'utf8').toString('base64')
     })
+    let num_of_yays = globalState.find((state: { key: string; }) => {
+      return state.key === Buffer.from("num_of_yays", 'utf8').toString('base64')
+    })
+    let num_of_nays = globalState.find((state: { key: string; }) => {
+      return state.key === Buffer.from("num_of_nays", 'utf8').toString('base64')
+    })
+
     console.log(globalState);
     let prop = Buffer.from(proposal.value.bytes, 'base64').toString('utf-8')
     
     console.log(proposal.value.bytes);
     console.log(end_time.value.uint);
+    console.log(num_of_yays.value.uint);
+    console.log(num_of_nays.value.uint);
     document.getElementById("proposal_description").innerHTML = `${prop}`
-    document.getElementById("proposal_end_time").innerHTML = `${end_time.value.uint}`
+    document.getElementById("proposal_end_time").innerHTML = `${end_time.value.uint} seconds`
+
+    document.getElementById("yes_voters").innerHTML = `${num_of_yays.value.uint} YES`
+    document.getElementById("no_voters").innerHTML = `${num_of_nays.value.uint} NO`
     
   })();
 })

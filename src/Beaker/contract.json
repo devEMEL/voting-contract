@@ -16,6 +16,33 @@
             "returns": {
                 "type": "void"
             }
+        },
+        {
+            "name": "vote",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "vote_choice"
+                },
+                {
+                    "type": "string",
+                    "name": "key"
+                },
+                {
+                    "type": "application",
+                    "name": "app"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "get_vote_result",
+            "args": [],
+            "returns": {
+                "type": "void"
+            }
         }
     ],
     "networks": {}

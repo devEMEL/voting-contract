@@ -1,16 +1,59 @@
 #pragma version 8
 intcblock 0 1
-bytecblock 0x70726f706f73616c 0x73746172745f74696d65 0x656e645f74696d65
+bytecblock 0x6e756d5f6f665f79617973 0x6e756d5f6f665f6e617973 0x 0x656e645f74696d65 0x726573756c74 0x766f74655f63686f696365 0x73746172745f74696d65 0x6861735f766f7465 0x70726f706f73616c 0x796573 0x6e6f
 txn NumAppArgs
 intc_0 // 0
 ==
-bnz main_l4
+bnz main_l8
 txna ApplicationArgs 0
 pushbytes 0xdae386d8 // "create_proposal(string,uint64)void"
 ==
-bnz main_l3
+bnz main_l7
+txna ApplicationArgs 0
+pushbytes 0x9c2b80d5 // "vote(string,string,application)void"
+==
+bnz main_l6
+txna ApplicationArgs 0
+pushbytes 0x0c5558ba // "get_vote_result()void"
+==
+bnz main_l5
 err
-main_l3:
+main_l5:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub getvoteresult_7
+intc_1 // 1
+return
+main_l6:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+txna ApplicationArgs 1
+store 2
+txna ApplicationArgs 2
+store 3
+txna ApplicationArgs 3
+intc_0 // 0
+getbyte
+store 4
+load 2
+load 3
+load 4
+callsub vote_6
+intc_1 // 1
+return
+main_l7:
 txn OnCompletion
 intc_0 // NoOp
 ==
@@ -26,20 +69,32 @@ btoi
 store 1
 load 0
 load 1
-callsub createproposal_3
+callsub createproposal_5
 intc_1 // 1
 return
-main_l4:
+main_l8:
 txn OnCompletion
 intc_0 // NoOp
 ==
-bnz main_l8
+bnz main_l14
 txn OnCompletion
 intc_1 // OptIn
 ==
-bnz main_l7
+bnz main_l13
+txn OnCompletion
+pushint 2 // CloseOut
+==
+bnz main_l12
 err
-main_l7:
+main_l12:
+txn ApplicationID
+intc_0 // 0
+!=
+assert
+callsub clearvote_4
+intc_1 // 1
+return
+main_l13:
 txn ApplicationID
 intc_0 // 0
 !=
@@ -47,7 +102,7 @@ assert
 callsub optin_1
 intc_1 // 1
 return
-main_l8:
+main_l14:
 txn ApplicationID
 intc_0 // 0
 ==
@@ -58,28 +113,36 @@ return
 
 // create
 create_0:
-bytec_0 // "proposal"
-pushbytes 0x // ""
+bytec 8 // "proposal"
+bytec_2 // ""
 app_global_put
-bytec_1 // "start_time"
+bytec 6 // "start_time"
 intc_0 // 0
 app_global_put
-bytec_2 // "end_time"
+bytec_3 // "end_time"
 intc_0 // 0
 app_global_put
-pushbytes 0x726573756c74 // "result"
+bytec 4 // "result"
+bytec_2 // ""
+app_global_put
+bytec_0 // "num_of_yays"
 intc_0 // 0
 app_global_put
-pushbytes 0x6e756d5f6f665f79617973 // "num_of_yays"
-intc_0 // 0
-app_global_put
-pushbytes 0x6e756d5f6f665f6e617973 // "num_of_nays"
+bytec_1 // "num_of_nays"
 intc_0 // 0
 app_global_put
 retsub
 
 // optin
 optin_1:
+txn Sender
+bytec 5 // "vote_choice"
+bytec_2 // ""
+app_local_put
+txn Sender
+bytec 7 // "has_vote"
+intc_0 // 0
+app_local_put
 retsub
 
 // auth_only
@@ -88,22 +151,149 @@ global CreatorAddress
 ==
 retsub
 
+// auth_opted_in
+authoptedin_3:
+global CurrentApplicationID
+app_opted_in
+retsub
+
+// clear_vote
+clearvote_4:
+txn Sender
+bytec 5 // "vote_choice"
+bytec_2 // ""
+app_local_put
+retsub
+
 // create_proposal
-createproposal_3:
-store 3
-store 2
+createproposal_5:
+store 6
+store 5
 txn Sender
 callsub authonly_2
 // unauthorized
 assert
-bytec_0 // "proposal"
-load 2
+bytec 8 // "proposal"
+load 5
 extract 2 0
 app_global_put
-bytec_1 // "start_time"
+bytec 6 // "start_time"
 global LatestTimestamp
 app_global_put
-bytec_2 // "end_time"
-load 3
+bytec_3 // "end_time"
+load 6
 app_global_put
+retsub
+
+// vote
+vote_6:
+store 9
+store 8
+store 7
+txn Sender
+callsub authoptedin_3
+// unauthorized
+assert
+txn Sender
+load 9
+txnas Applications
+load 8
+extract 2 0
+app_local_get_ex
+store 11
+store 10
+load 11
+assert
+global LatestTimestamp
+bytec 6 // "start_time"
+app_global_get
+>=
+global LatestTimestamp
+bytec_3 // "end_time"
+app_global_get
+<=
+&&
+assert
+load 10
+intc_1 // 1
+==
+assert
+txn Sender
+bytec 7 // "has_vote"
+app_local_get
+intc_0 // 0
+==
+assert
+load 7
+extract 2 0
+bytec 9 // "yes"
+==
+bnz vote_6_l3
+load 7
+extract 2 0
+bytec 10 // "no"
+==
+bz vote_6_l4
+txn Sender
+bytec 5 // "vote_choice"
+bytec 10 // "no"
+app_local_put
+bytec_1 // "num_of_nays"
+bytec_1 // "num_of_nays"
+app_global_get
+intc_1 // 1
++
+app_global_put
+b vote_6_l4
+vote_6_l3:
+txn Sender
+bytec 5 // "vote_choice"
+bytec 9 // "yes"
+app_local_put
+bytec_0 // "num_of_yays"
+bytec_0 // "num_of_yays"
+app_global_get
+intc_1 // 1
++
+app_global_put
+vote_6_l4:
+txn Sender
+bytec 7 // "has_vote"
+intc_1 // 1
+app_local_put
+retsub
+
+// get_vote_result
+getvoteresult_7:
+global LatestTimestamp
+bytec_3 // "end_time"
+app_global_get
+>
+assert
+bytec_0 // "num_of_yays"
+app_global_get
+bytec_1 // "num_of_nays"
+app_global_get
+>
+bnz getvoteresult_7_l4
+bytec_0 // "num_of_yays"
+app_global_get
+bytec_1 // "num_of_nays"
+app_global_get
+<
+bnz getvoteresult_7_l3
+bytec 4 // "result"
+pushbytes 0x746965 // "tie"
+app_global_put
+b getvoteresult_7_l5
+getvoteresult_7_l3:
+bytec 4 // "result"
+pushbytes 0x6661696c6564 // "failed"
+app_global_put
+b getvoteresult_7_l5
+getvoteresult_7_l4:
+bytec 4 // "result"
+pushbytes 0x706173736564 // "passed"
+app_global_put
+getvoteresult_7_l5:
 retsub

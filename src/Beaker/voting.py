@@ -1,6 +1,6 @@
 from pyteal import *
 from typing import Final
-from beaker import Application, AccountStateValue, ApplicationStateValue, external, opt_in, create, Authorize
+from beaker import Application, AccountStateValue, ApplicationStateValue, Authorize, bare_external, external, create, opt_in
 
 
 class Voting(Application):
@@ -63,10 +63,16 @@ class Voting(Application):
             ),
             Assert(is_staking.value() == Int(1)),
             Assert(self.has_vote == Int(0)),
-            If(self.vote_choice == Bytes("yes"))
-            .Then(self.num_of_yays + Int(1))
-            .ElseIf(self.vote_choice == Bytes("no"))
-            .Then(self.num_of_nays + Int(1)),
+            If(vote_choice.get() == Bytes("yes"))
+            .Then(
+                self.vote_choice.set(Bytes("yes")),
+                self.num_of_yays.increment()
+            )
+            .ElseIf(vote_choice.get() == Bytes("no"))
+            .Then(
+                self.vote_choice.set(Bytes("no")),
+                self.num_of_nays.increment()
+            ),
             self.has_vote.set(Int(1))
         )
 
@@ -75,10 +81,10 @@ class Voting(Application):
         return Seq(
             Assert(Global.latest_timestamp() > self.end_time),
             If(self.num_of_yays > self.num_of_nays)
-            .Then(self.result.set("passed"))
+            .Then(self.result.set(Bytes("passed")))
             .ElseIf(self.num_of_yays < self.num_of_nays)
-            .Then(self.result.set("failed"))
-            .Else(self.result.set("tie"))
+            .Then(self.result.set(Bytes("failed")))
+            .Else(self.result.set(Bytes("tie")))
         )
 
 

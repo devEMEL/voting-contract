@@ -8,15 +8,15 @@ from algosdk.future.transaction import AssetTransferTxn
 from beaker import Application, AccountStateValue, opt_in, external, create
 
 
-## TODO: Switch Sandbox network to Testnet
-
 client = AlgoNode(Network.TestNet).algod()
 # client = sandbox.get_algod_client()
 
 accts = sandbox.get_accounts()
 
 creator_acct = accts.pop()
+print(creator_acct.address)
 acct1 = accts.pop()
+print(acct1.address)
 
 app=Voting()
 app_client = ApplicationClient(client=client, app=app, signer=creator_acct.signer)

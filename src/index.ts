@@ -158,8 +158,6 @@ buttons.propose_yes.onclick = async () => {
 
   const result = await votingApp.vote({vote_choice: String("yes"), key: String("is_staking"), app: BigInt(stakingAPPID)});
   console.log(result)
-  // const result = await votingApp.closeOut();
-  // console.log(result)
 
   const proposal = await votingApp.getApplicationState()
   let yesVote = proposal["num_of_yays"]

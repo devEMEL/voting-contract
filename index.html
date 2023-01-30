@@ -14,12 +14,12 @@
       <div
         class="md:flex-[0.5] flex-initial justify-center items-center text-white font-bold text-2xl"
       >
-        Algo Smart Vote
+        Algo Smart DAO
       </div>
-
+      <select name="accounts" id="accounts" style="display: none;">Select account</select>
       <button
         onclick="truncate()"
-        id="connection"
+        id="connect"
         class="shadow-xl shadow-black text-white bg-green-400 hover:bg-green-600 md:text-xs p-2 rounded-full"
       >
         Connect Wallet
@@ -28,7 +28,8 @@
 
     <main class="grid grid-cols-1 md:grid-cols-2 h-[90%] w-full">
       <div class="h-full p-5 pb-2 pl-10">
-        <div class="w-full h-[50%]">
+        <div class="w-full h-[50%]" id="hide_proposal_main"> 
+          <!-- display none -->
           <form class="flex flex-col h-full">
             <div
               class="flex justify-between items-center bg-gray-800 rounded-xl h-[80%]"
@@ -39,6 +40,7 @@
                 name="proposal"
                 required
                 value=""
+                id="description"
               ></textarea>
             </div>
 
@@ -52,46 +54,55 @@
                 value=""
                 name="price"
                 required
+                id="end_time"
               />
             </div>
 
             <button
-              class="flex w-full text-md mt-2 justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-full p-2"
+              class="flex w-full text-md mt-2 justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-full p-2" id="make_proposal"
             >
               Make Proposal
             </button>
           </form>
         </div>
-        <div class="w-full h-[50%] pt-5">
+        <div class="w-full h-[50%] pt-5" style="display: none;" id="hide_proposal_sub">
+          <!-- display none -->
           <div class="h-full bg-gray-700 rounded-md">
             <button
-              class="flex h-[15%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+              class="flex h-[15%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2" id="get_proposal"
             >
               Get Proposal
             </button>
 
-            <div class="h-[75%]">
-              <!-- Lists of results-->
-              <div
-                class="bg-gray-800 p-2 my-4 mx-2 h-auto text-md text-white font-semibold rounded-md"
-              >
-                10 Yes
-              </div>
-            </div>
+          </div>
+        </div>
+
+
+        <div class="h-[75%]">
+          <!-- Lists of results-->
+          <div
+            class="bg-gray-800 p-2 my-4 mx-2 h-auto text-md text-white font-semibold rounded-md" id="yes_voters"
+          >
+            10 Yes
+          </div>
+          <div
+            class="bg-gray-800 p-2 my-4 mx-2 h-auto text-md text-white font-semibold rounded-md" id="no_voters"
+          >
+            10 No
           </div>
         </div>
       </div>
       <div class="h-full pb-2 p-5 pr-10">
         <div class="h-full border-l border-gray-500 pl-2">
           <button
-            class="flex max-h-[10%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+            class="flex max-h-[10%] w-full text-md justify-center items-center shadow-lg shadow-black text-white bg-green-500 hover:bg-green-600 rounded-md p-2" id="optin_to_contract"
           >
             Optin To Contract
           </button>
           <div class="max-h-[90%] overflow-y-auto">
             <!-- List for proposals-->
             <div class="h-auto rounded-md mt-4 bg-slate-800">
-              <div class="p-2 text-white text-sm">
+              <div class="p-2 text-white text-sm" id="proposal_description">
                 we all need to move up the ladder we all need to move up the
                 ladder we all need to move up the ladder we all need to move up
                 the ladder we all need to move up the ladder we all need to move
@@ -99,17 +110,17 @@
               </div>
               <div class="p-2 text-white text-md">
                 <small class="font-bold"> End Time: </small>
-                <small class="text-green-600"> 60 secs </small>
+                <small class="text-green-600" id="proposal_end_time"> 60 secs </small>
               </div>
 
               <div class="p-2 flex justify-between gap-3">
                 <button
-                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-green-500 hover:bg-green-600 rounded-md p-2"
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-green-500 hover:bg-green-600 rounded-md p-2" id="propose_yes"
                 >
                   YES
                 </button>
                 <button
-                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-red-500 hover:bg-red-600 rounded-md p-2"
+                  class="flex text-md w-full justify-center items-center shadow-lg text-white bg-red-500 hover:bg-red-600 rounded-md p-2" id="propose_no"
                 >
                   NO
                 </button>

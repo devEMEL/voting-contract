@@ -211,6 +211,6 @@ const getOnchain = async() => {
 }
 
 window.onload = (e => {
-   getOnchain()
+  getOnchain()
   
 })

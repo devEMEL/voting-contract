@@ -1,16 +1,25 @@
 import "./app.css";
 
 import algosdk from "algosdk";
-import { MyAlgoSession} from './wallets/myalgo'
-import { Voting } from './voting_client';
+
+import { MyAlgoSession } from "./wallets/myalgo";
+import { Voting } from "./voting_client";
 
 const myAlgo = new MyAlgoSession();
-const algodClient = new algosdk.Algodv2('', "https://node.testnet.algoexplorerapi.io", '');
-const indexerClient = new algosdk.Indexer('', "https://algoindexer.testnet.algoexplorerapi.io", '');
+const algodClient = new algosdk.Algodv2(
+  "",
+  "https://node.testnet.algoexplorerapi.io",
+  ""
+);
+const indexerClient = new algosdk.Indexer(
+  "",
+  "https://algoindexer.testnet.algoexplorerapi.io",
+  ""
+);
 
 async function signer(txns: algosdk.Transaction[]) {
-  const sTxns = await myAlgo.signTxns(txns)
-  return sTxns.map(s => s.blob)
+  const sTxns = await myAlgo.signTxns(txns);
+  return sTxns.map((s) => s.blob);
 }
 
 let faucetAPPID = 156293058;
@@ -23,18 +32,17 @@ let ASSETID = 156293328;
 
 const buttonIds = ['connect', 'create_app', 'optin_to_contract', 'make_proposal', 'get_proposal', 'propose_yes', 'propose_no'];
 
-// end_time, description, 'yes_voters', 'no_voters', proposal_description, proposal_end_time
 const buttons: {[key: string]: HTMLButtonElement} = {};
 const accountsMenu = document.getElementById('accounts') as HTMLSelectElement;
 
-let end_time = document.getElementById("end_time") as HTMLInputElement
-let description = document.getElementById("description") as HTMLTextAreaElement
+let end_time = document.getElementById("end_time") as HTMLInputElement;
+let description = document.getElementById("description") as HTMLTextAreaElement;
 
+// let ASSETID = 156293328;
 
-
-buttonIds.forEach(id => {
-  buttons[id] = document.getElementById(id) as HTMLButtonElement
-})
+buttonIds.forEach((id) => {
+  buttons[id] = document.getElementById(id) as HTMLButtonElement;
+});
 
 const truncate = (
   text = "0x0872893278987067858758755028302",

@@ -14,9 +14,11 @@ client = AlgoNode(Network.TestNet).algod()
 accts = sandbox.get_accounts()
 
 creator_acct = accts.pop()
-print(creator_acct.address)
+print(f"Creator address from sandbox: {creator_acct.address}")
 acct1 = accts.pop()
-print(acct1.address)
+print(f"Account 1 address from sandbox: {acct1.address}")
+acct2 = accts.pop()
+print(f"Account 2 address from sandbox: {acct2.address}")
 
 app=Voting()
 app_client = ApplicationClient(client=client, app=app, signer=creator_acct.signer)
@@ -28,19 +30,25 @@ def test():
 
     acct1_client = app_client.prepare(signer=acct1.signer)
 
-    # acct1_client.opt_in()
+    acct1_client.opt_in(foreign_apps=[156293058])
+
+    # txn = 
+    # TransactionWithSigner(
+    #     txn=AssetTransferTxn(sender=acct1.address, sp=client.suggested_params(), receiver=acct1.address, amt=0, index=156293328),
+    #     signer=acct1.signer
+    # )
 
     app_client.call(app.create_proposal, proposal="Mint NFT?", end_time=120)
 
+    # print(app_client.get_application_state())
+
+    # print(acct1_client.get_account_state())
+
+    # acct1_client.call(app.vote, vote_choice="yes", key="is_staking", app=156293058)
+
     print(app_client.get_application_state())
 
-    print(acct1_client.get_account_state())
-
-    acct1_client.call(app.vote, vote_choice="yes", key="is_staking", app=156293058)
-
-    print(app_client.get_application_state())
-
-    print(acct1_client.get_account_state())
+    # print(acct1_client.get_account_state())
   
 
-test()
+# test()

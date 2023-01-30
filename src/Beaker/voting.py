@@ -42,7 +42,7 @@ class Voting(Application):
         return Seq(
             self.proposal.set(proposal.get()),
             self.start_time.set(Global.latest_timestamp()),
-            self.end_time.set(end_time.get())
+            self.end_time.set(Global.latest_timestamp() + end_time.get())
         )
 
     @external(authorize=Authorize.opted_in(Global.current_application_id()))
@@ -83,7 +83,7 @@ class Voting(Application):
             If(self.num_of_yays > self.num_of_nays)
             .Then(self.result.set(Bytes("passed")))
             .ElseIf(self.num_of_yays < self.num_of_nays)
-            .Then(self.result.set(Bytes("failed")))
+            .Then(self.result.set(Bytes("rejected")))
             .Else(self.result.set(Bytes("tie")))
         )
 

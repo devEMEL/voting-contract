@@ -228,7 +228,9 @@ bytec 7 // "start_time"
 global LatestTimestamp
 app_global_put
 bytec 5 // "end_time"
+global LatestTimestamp
 load 6
++
 app_global_put
 retsub
 
@@ -335,7 +337,7 @@ app_global_put
 b getvoteresult_7_l5
 getvoteresult_7_l3:
 bytec 6 // "result"
-pushbytes 0x6661696c6564 // "failed"
+pushbytes 0x72656a6563746564 // "rejected"
 app_global_put
 b getvoteresult_7_l5
 getvoteresult_7_l4:

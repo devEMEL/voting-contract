@@ -21,7 +21,7 @@ The application also includes a clear vote function.
 [Voting Contract](https://github.com/devEMEL/voting-contract)  
 [Voting App](https://melodic-licorice-c6506f.netlify.app/)   
 
-ASC - Algorand Standard Coin Asset https://testnet.algoexplorer.io/asset/156293328 
-ASC Application https://testnet.algoexplorer.io/application/156293058 
-Staking Contract https://testnet.algoexplorer.io/application/156323953 
-Voting Contract https://testnet.algoexplorer.io/application/156404418 
+ASC - Algorand Standard Coin Asset https://testnet.algoexplorer.io/asset/156293328  
+ASC Application https://testnet.algoexplorer.io/application/156293058  
+Staking Contract https://testnet.algoexplorer.io/application/156323953   
+Voting Contract https://testnet.algoexplorer.io/application/156404418  

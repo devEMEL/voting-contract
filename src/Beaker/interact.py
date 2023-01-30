@@ -8,6 +8,8 @@ from algosdk.future.transaction import AssetTransferTxn
 from beaker import Application, AccountStateValue, opt_in, external, create
 
 
+## TODO: Test app with interact script
+
 client = AlgoNode(Network.TestNet).algod()
 # client = sandbox.get_algod_client()
 

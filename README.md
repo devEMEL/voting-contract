@@ -25,3 +25,10 @@ ASC - Algorand Standard Coin Asset https://testnet.algoexplorer.io/asset/1562933
 ASC Application https://testnet.algoexplorer.io/application/156293058  
 Staking Contract https://testnet.algoexplorer.io/application/156323953   
 Voting Contract https://testnet.algoexplorer.io/application/156404418  
+
+
+##  Contributors 
+[IAMWilliam](https://twitter.com/codypharm)  
+[T.I.](https://twitter.com/Isaactevin)  
+[Dominic](https://twitter.com/HenRi33333)  
+[Gabriel Kunzer](https://twitter.com/gabrielkunzer)  

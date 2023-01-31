@@ -31,4 +31,4 @@ Voting Contract https://testnet.algoexplorer.io/application/156404418
 [IAMWilliam](https://twitter.com/codypharm)  
 [T.I.](https://twitter.com/Isaactevin)  
 [Dominic](https://twitter.com/HenRi33333)  
-[Gabriel Kunzer](https://twitter.com/gabrielkunzer)  
+[Gabriel](https://twitter.com/gabrielkunzer)  

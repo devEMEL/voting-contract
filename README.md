@@ -32,4 +32,4 @@ Voting Contract https://testnet.algoexplorer.io/application/156404418
 [T.I.](https://twitter.com/Isaactevin)  
 [Dominic](https://twitter.com/HenRi33333)  
 [Phoenix](https://twitter.com/gabrielkunzer)  
-[success](https://github.com/0xBitzz)  
+[Success](https://github.com/0xBitzz)  
